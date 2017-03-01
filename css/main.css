@@ -1,6 +1,6 @@
 .container {
   height: 600px;
-  width: 1000px;
+  width: 1300px;
   margin: auto;
   border: 4px solid black;
   display: flex; 
@@ -8,8 +8,8 @@
 }
 
 .bomb {
-  height: 100px; 
-  width: 100px; 
+  height: 140px; 
+  width: 140px; 
   border-radius: 100%; 
   background-color: green; 
   justify-content: center;
@@ -19,11 +19,22 @@
   transition: all .5s ease-in-out;
 }
 
-.transition {
-  animation: explosion 1.5s; 
+.obstacle {
+  height: 100px; 
+  width: 100px; 
+  border-radius: 100%; 
+  background-color: red; 
+  justify-content: center;
+  align-items: center;
+  display: flex; 
+  position: absolute;
 }
 
-#counter {
+.transition {
+  animation: explosion 1.5s both; 
+}
+
+.counter {
   font-size: 30px;
   color: green;
   text-align: center;
@@ -38,7 +49,24 @@
   }
   to {
     background-color: red; 
-    height: 140px;
-    width: 140px; 
+    height: 100px;
+    width: 100px; 
   }
 }
+
+.endAnim {
+  animation: endAnim 1.5s both;
+}
+
+@keyframes endAnim {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: red; 
+  }
+
+}
+
+
+
