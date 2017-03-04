@@ -1,10 +1,55 @@
-.container {
+* {
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+li {
+  list-style-type: none;
+}
+
+.scoreSection {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  width: 30%; 
+  border: 2px solid lightgrey;
+  margin: 20px; 
+}
+
+.scoreContainer {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.scoreContainer:first-child {
+  border-right: 2px solid lightgrey; 
+}
+
+.counterHeader {
+  font-size: 25px;
+  color: green;
+}
+
+.counter {
+  color: green;
+  font-size: 20px; 
+}
+
+.gameContainer {
   height: 600px;
   width: 1300px;
   margin: auto;
-  border: 4px solid black;
   display: flex; 
   position: relative;
+  background-color: lightblue;
 }
 
 .bomb {
@@ -30,18 +75,12 @@
   position: absolute;
 }
 
+
+/****************** KEYFRAMES ******************/
+
 .transition {
   animation: explosion 1s both; 
 }
-
-.counter {
-  font-size: 30px;
-  color: green;
-  text-align: center;
-  width: 50%;
-  margin: auto; 
-}
-
 
 @keyframes explosion {
   from {
@@ -60,7 +99,7 @@
 
 @keyframes endAnim {
   from {
-    background-color: white;
+    background-color: lightblue;
   }
   to {
     background-color: red; 

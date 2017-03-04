@@ -5,18 +5,23 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-  <p id="counter" class="counter"></p>
-  <div>
-    <p id="highScore" class="counter"></p>
-    <ul id="scoreList">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+  <section class="scoreSection">
+    <div class="scoreContainer">
+      <h1 class="counterHeader">Score: </h1>
+      <p id="counter" class="counter"></p>
+    </div>
+    <div class="scoreContainer">
+      <h1 class="counterHeader">High Scores: </h1>
+      <ul id="scoreList" class="counter">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </section>
   </div>
-  <section id="container" class="container">
+  <section id="gameContainer" class="gameContainer">
     <div id="bomb" class="bomb transition" onclick="bombClick()">Click me !</div>
     <!-- <div class="obstacle bomb">Don't click me</div> -->
   </section>

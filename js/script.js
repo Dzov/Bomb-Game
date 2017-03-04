@@ -1,24 +1,13 @@
 var counter = {
-  scoreElem: document.getElementById("counter"),  
-  highScoreElem: document.getElementById("highScore"), 
-  highScore: localStorage.storedHighScore, 
+  scoreElt: document.getElementById("counter"),  
   score: 0, 
-  calcHighScore: function() {
-    if (counter.score > counter.highScore) {
-      counter.highScore = counter.score; 
-      localStorage.storedHighScore = counter.highScore; 
-    }
-  },
   scoreDisplay: function() {
-    this.scoreElem.innerHTML = "Score: " + this.score;
+    this.scoreElt.innerHTML = this.score;
   }, 
-  highScoreDisplay: function() {
-    this.highScoreElem.innerHTML = "High Score: " + localStorage.storedHighScore;
-  },
   addPoints: function() {
     this.score += 10; 
   }
-}; 
+}; /*** END counter Object ***/
 
 
 var bomb = {
@@ -38,94 +27,64 @@ var bomb = {
   },
   endGame: function() {
       // end game animation 
-      document.querySelector(".container").classList.add("endAnim"); 
+      document.querySelector(".gameContainer").classList.add("endAnim"); 
       this.element.innerHTML = "You lost !"; 
   }
-}; 
+}; /*** END bomb Object ***/
 
 
 var topScores = {
   scoreTable: [0,0,0,0,0],
-  stringify: "", 
   parsed: [], 
-  // stringify: function() { 
-  //    JSON.stringify(this.scoreTable);
-  // },
-  // parsed: function() {
-  //   JSON.parse(localStorage.best);
-  // }, 
   updateScores: function () {
     for (let i = 0 ; i < 5 ; i ++) {
+      // si le score est plus grand que l'un des highScore et qu'il n'existe pas encore dans le tableau
       if (counter.score > topScores.scoreTable[i] && (topScores.scoreTable.indexOf(counter.score)) == -1) {
+        // alors le nouveau score est ajouté au tableau
         topScores.scoreTable.splice(i, 0, counter.score); 
-        topScores.scoreTable.splice(5, 1); 
+        // et la valeur en trop est supprimée
+        topScores.scoreTable.splice(5, 1);
+
         console.log(topScores.scoreTable); 
-        topScores.stringify = JSON.stringify(topScores.scoreTable); 
+        localStorage.best = JSON.stringify(topScores.scoreTable); 
         console.log(topScores.stringify); 
-        topScores.parsed = JSON.parse(topScores.stringify); 
+        topScores.parsed = JSON.parse(localStorage.best); 
         console.log(topScores.parsed); 
       }
     }
   }, 
-  displayScore: function () {
+  highScoreDisplay: function () {
     var listItem = document.querySelectorAll("#scoreList > li");
     for (let i = 0 ; i < 5 ; i++) {
-      listItem[i].innerHTML = topScores.parsed[i]; 
+      listItem[i].innerHTML = i +1 + ": " +topScores.parsed[i]; 
     }
   }
+} /*** END topScores Object ***/
 
+if (localStorage.best) {
+  topScores.parsed = JSON.parse(localStorage.best); 
+  topScores.scoreTable = topScores.parsed; 
 }
 
 
-// console.log(listItem[1]); 
-//       for (let i = 0 ; i < 5 ; i++) {
-//         listItem[i].innerHTML = topScores.parsed; 
-//       }
-
-// console.log(topScores.parsed); 
-
-
-
-// var bestScores = [0, 0, 0, 0, 0]; 
-// var displayScore; 
-// var parsed = JSON.parse(localStorage.best);
-
- 
-//   for (let i = 0 ; i < 5 ; i++) {
-//    // si le score est plus grand que l'un des highScore et qu'il n'existe pas encore dans le tableau
-//     if (counter.score > bestScores[i] && (bestScores.indexOf(counter.score)) == -1) {
-//       // alors le nouveau score est ajouté au tableau
-//       bestScores.splice(i, 0, counter.score); 
-//       // et la valeur en trop est supprimée
-//       bestScores.splice(5, 1);
-//     }
-//   }
-  
-      // localStorage.best = JSON.stringify(bestScores);
-      // console.log( localStorage.best);  
-
-
-
-
-
-
-
+/*****************  JEU  *******************/
 
 
 /**** Début de partie ****/
 // Affiche le score et highScore
 counter.scoreDisplay(); 
-counter.highScoreDisplay(); 
+topScores.highScoreDisplay(); 
+
 
 /**** Partie ****/
 function bombClick() {
   // Réinitialise le container
-  document.querySelector(".container").classList.remove("endAnim"); 
+  document.querySelector(".gameContainer").classList.remove("endAnim"); 
   // Random position
-  // bomb.position(); 
+  bomb.position(); 
   //Relance l'animation au click
   bomb.animation(); 
-  // Counter
+  // Calculates and displays score
   counter.addPoints(); 
   counter.scoreDisplay(); 
 } /*** END bombClick() ***/
@@ -133,14 +92,11 @@ function bombClick() {
  
 /**** Fin de partie ****/ 
 bomb.element.addEventListener("animationend", function() {
-  //fonction highScore et counter restart
-  counter.calcHighScore(); 
-  counter.highScoreDisplay(); 
   //adds the end of game animation
   bomb.endGame(); 
-
+  // Calculates and displays High Scores
   topScores.updateScores(); 
-  topScores.displayScore(); 
+  topScores.highScoreDisplay(); 
   // restarts the counter
   counter.score = 0; 
 }); /*** END onanimationend() ***/
