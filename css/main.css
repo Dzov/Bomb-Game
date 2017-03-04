@@ -18,7 +18,6 @@ li {
   align-content: center;
   justify-content: space-between;
   width: 30%; 
-  border: 2px solid lightgrey;
   margin: 20px; 
 }
 
@@ -31,6 +30,10 @@ li {
 
 .scoreContainer:first-child {
   border-right: 2px solid lightgrey; 
+}
+
+.scoreContainer:nth-child(2) {
+  flex: 1.5; 
 }
 
 .counterHeader {
@@ -55,13 +58,20 @@ li {
 .bomb {
   height: 140px; 
   width: 140px; 
-  border-radius: 100%; 
-  background-color: green; 
+  background: transparent url("../img/shrimp.png") no-repeat center center;
+  background-size: contain; 
   justify-content: center;
   align-items: center;
   display: flex; 
-  position: absolute;
+  position: relative;
   transition: all .5s ease-in-out;
+}
+
+.bombText {
+  position: absolute;
+  top: -30px;
+  font-size: 25px; 
+  color: green;
 }
 
 .obstacle {
@@ -84,12 +94,30 @@ li {
 
 @keyframes explosion {
   from {
-    background-color: green;
+    transform: scale(1);
   }
   to {
-    background-color: red; 
-    height: 100px;
-    width: 100px; 
+    transform: scale(.5);
+  }
+/*  to {
+    transform: scale(.5);
+  }*/
+}
+
+.death {
+  animation: death .5s both;
+}
+
+@keyframes death {
+  from {
+    background: transparent url("../img/shrimp.png") no-repeat center center;
+    background-size: contain; 
+    transform: scale(.5);
+  }
+  to {
+    background: transparent url("../img/ghost.png") no-repeat center center;
+    background-size: contain;
+    transform: scale(1);
   }
 }
 

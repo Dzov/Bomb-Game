@@ -2,16 +2,41 @@ var counter = {
   scoreElt: document.getElementById("counter"),  
   score: 0, 
   scoreDisplay: function() {
-    this.scoreElt.innerHTML = this.score;
+    this.scoreElt.textContent = this.score;
   }, 
   addPoints: function() {
     this.score += 10; 
   }
 }; /*** END counter Object ***/
 
+var topScores = {
+  scoreTable: [0,0,0,0,0],
+  parsed: [], 
+  updateScores: function () {
+    for (let i = 0 ; i < 5 ; i ++) {
+      // si le score est plus grand que l'un des highScore et qu'il n'existe pas encore dans le tableau
+      if (counter.score > topScores.scoreTable[i] && (topScores.scoreTable.indexOf(counter.score)) == -1) {
+        // alors le nouveau score est ajouté au tableau à la place de la valeur du précédent highscore
+        topScores.scoreTable.splice(i, 0, counter.score); 
+        // et la valeur en trop est supprimée
+        topScores.scoreTable.splice(5, 1);
+        // store les highscores
+        localStorage.best = JSON.stringify(topScores.scoreTable); 
+      }
+    }
+  }, 
+  highScoreDisplay: function () {
+    var listItem = document.querySelectorAll("#scoreList > li");
+    for (let i = 0 ; i < 5 ; i++) {
+      listItem[i].textContent = i +1 + ": " + topScores.parsed[i]; 
+    }
+  }
+}; /*** END topScores Object ***/
 
 var bomb = {
+  container: document.querySelector(".gameContainer"), 
   element: document.getElementById("bomb"), 
+  text: document.querySelector(".bombText"),
   // random position 
   position: function() { 
     this.element.style.left = Math.floor((Math.random() * 1200) + 1) + "px"; 
@@ -23,43 +48,15 @@ var bomb = {
     window.requestAnimationFrame(function() { 
       bomb.element.classList.add("transition");
     });
-    this.element.innerHTML = "Click me !"; 
+    this.text.textContent = "Catch me !"; 
   },
   endGame: function() {
       // end game animation 
-      document.querySelector(".gameContainer").classList.add("endAnim"); 
-      this.element.innerHTML = "You lost !"; 
+      this.container.classList.add("endAnim"); 
+      this.text.textContent = "You lost !"; 
   }
 }; /*** END bomb Object ***/
 
-
-var topScores = {
-  scoreTable: [0,0,0,0,0],
-  parsed: [], 
-  updateScores: function () {
-    for (let i = 0 ; i < 5 ; i ++) {
-      // si le score est plus grand que l'un des highScore et qu'il n'existe pas encore dans le tableau
-      if (counter.score > topScores.scoreTable[i] && (topScores.scoreTable.indexOf(counter.score)) == -1) {
-        // alors le nouveau score est ajouté au tableau
-        topScores.scoreTable.splice(i, 0, counter.score); 
-        // et la valeur en trop est supprimée
-        topScores.scoreTable.splice(5, 1);
-
-        console.log(topScores.scoreTable); 
-        localStorage.best = JSON.stringify(topScores.scoreTable); 
-        console.log(topScores.stringify); 
-        topScores.parsed = JSON.parse(localStorage.best); 
-        console.log(topScores.parsed); 
-      }
-    }
-  }, 
-  highScoreDisplay: function () {
-    var listItem = document.querySelectorAll("#scoreList > li");
-    for (let i = 0 ; i < 5 ; i++) {
-      listItem[i].innerHTML = i +1 + ": " +topScores.parsed[i]; 
-    }
-  }
-} /*** END topScores Object ***/
 
 if (localStorage.best) {
   topScores.parsed = JSON.parse(localStorage.best); 
@@ -78,8 +75,9 @@ topScores.highScoreDisplay();
 
 /**** Partie ****/
 function bombClick() {
+  bomb.element.classList.remove("death"); 
   // Réinitialise le container
-  document.querySelector(".gameContainer").classList.remove("endAnim"); 
+  bomb.container.classList.remove("endAnim"); 
   // Random position
   bomb.position(); 
   //Relance l'animation au click
@@ -94,6 +92,7 @@ function bombClick() {
 bomb.element.addEventListener("animationend", function() {
   //adds the end of game animation
   bomb.endGame(); 
+  bomb.element.classList.add("death"); 
   // Calculates and displays High Scores
   topScores.updateScores(); 
   topScores.highScoreDisplay(); 
