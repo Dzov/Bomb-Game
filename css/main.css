@@ -48,11 +48,12 @@ li {
 
 .gameContainer {
   height: 600px;
-  width: 1300px;
+  width: 100%;
   margin: auto;
   display: flex; 
   position: relative;
-  background-color: lightblue;
+  background: url("../img/bg.png") no-repeat center 100%;
+  background-size: cover;
 }
 
 .bomb {
@@ -63,7 +64,7 @@ li {
   justify-content: center;
   align-items: center;
   display: flex; 
-  position: relative;
+  position: absolute;
   transition: all .5s ease-in-out;
 }
 
@@ -74,7 +75,14 @@ li {
   color: green;
 }
 
-.obstacle {
+.textAnim {
+  color: red; 
+  right: -60px;
+  top: 0; 
+  transform: rotate(90deg);
+}
+
+/*.obstacle {
   height: 100px; 
   width: 100px; 
   border-radius: 100%; 
@@ -83,13 +91,13 @@ li {
   align-items: center;
   display: flex; 
   position: absolute;
-}
+}*/
 
 
 /****************** KEYFRAMES ******************/
 
 .transition {
-  animation: explosion 1s both; 
+  animation: explosion 1s forwards; 
 }
 
 @keyframes explosion {
@@ -99,41 +107,29 @@ li {
   to {
     transform: scale(.5);
   }
-/*  to {
-    transform: scale(.5);
-  }*/
 }
 
 .death {
-  animation: death .5s both;
+  /*animation: death 1s forwards 1; */
+  animation: death .5s forwards;
+  
+}
+.float {
+  animation: float 2s .3s infinite; 
 }
 
-@keyframes death {
-  from {
-    background: transparent url("../img/shrimp.png") no-repeat center center;
-    background-size: contain; 
-    transform: scale(.5);
+@keyframes float {
+  0% {
+    margin-top : 0px;
   }
-  to {
-    background: transparent url("../img/ghost.png") no-repeat center center;
-    background-size: contain;
-    transform: scale(1);
+  50% {
+    margin-top : 30px;
+  }
+  100% {
+    margin-top : 0px;
   }
 }
 
-.endAnim {
-  animation: endAnim 1.5s both;
-}
-
-@keyframes endAnim {
-  from {
-    background-color: lightblue;
-  }
-  to {
-    background-color: red; 
-  }
-
-}
 
 
 

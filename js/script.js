@@ -39,8 +39,8 @@ var bomb = {
   text: document.querySelector(".bombText"),
   // random position 
   position: function() { 
-    this.element.style.left = Math.floor((Math.random() * 1200) + 1) + "px"; 
-    this.element.style.top = Math.floor((Math.random() * 500) + 1) + "px"; 
+    this.element.style.left = Math.floor(Math.random() * 95) + "%"; 
+    this.element.style.top = Math.floor(Math.random() * 100) + "%"; 
   }, 
   // restart bomb animation 
   animation: function() {
@@ -49,11 +49,12 @@ var bomb = {
       bomb.element.classList.add("transition");
     });
     this.text.textContent = "Catch me !"; 
+    this.text.classList.remove("textAnim"); 
   },
   endGame: function() {
       // end game animation 
-      this.container.classList.add("endAnim"); 
       this.text.textContent = "You lost !"; 
+      this.text.classList.add("textAnim"); 
   }
 }; /*** END bomb Object ***/
 
@@ -75,9 +76,7 @@ topScores.highScoreDisplay();
 
 /**** Partie ****/
 function bombClick() {
-  bomb.element.classList.remove("death"); 
-  // Réinitialise le container
-  bomb.container.classList.remove("endAnim"); 
+  bomb.element.classList.remove("float"); 
   // Random position
   bomb.position(); 
   //Relance l'animation au click
@@ -92,7 +91,9 @@ function bombClick() {
 bomb.element.addEventListener("animationend", function() {
   //adds the end of game animation
   bomb.endGame(); 
-  bomb.element.classList.add("death"); 
+  bomb.element.style.transform = "rotate(-90deg)";
+  bomb.element.style.top = "-50px";
+  bomb.element.classList.add("float"); 
   // Calculates and displays High Scores
   topScores.updateScores(); 
   topScores.highScoreDisplay(); 
